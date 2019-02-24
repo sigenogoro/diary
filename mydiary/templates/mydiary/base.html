@@ -1,0 +1,26 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'>
+        <link rel='stylesheet' href="{% static 'mydiary/css/mydiary.css' %}"
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3 mb-3">
+            <a class='navbar-brand' href='{% url "index" %}'>Mydiary</a>
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a href="{% url 'create' %}" class="btn btn-outline-primary">新規作成</a></td>
+                    </li>
+                </ul>
+             </div>
+        </nav>
+        <div class ="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
