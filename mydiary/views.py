@@ -19,6 +19,15 @@ def index(request):
     }
     return render(request, 'mydiary/index.html', params)
 
+def detail(request, num):
+    data = Document.objects.get(id=num)
+    params = {
+        'title': 'Record_detail',
+        'id': num,
+        'data': data
+    }
+    return render(request, 'mydiary/detail.html', params)
+
 def create(request):
     if request.method == 'POST':
         record_info = recordFrom(request.POST)
