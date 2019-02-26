@@ -1,15 +1,47 @@
 {% extends './base.html' %}
+{% load bootstrap4 %}
 {% block content %}
     <h1>{{title}}</h1>
     <div class="card">
-            <div class="card-header">
-                {{data.title}}
-            </div>
-            <div class="card-body">
-              <h6 class="card-title">#{{data.hash_key}}</h5>
-              <p class="card-text">{{data.content}}</p>
-            </div>
-          </div>
+        <div class="card-header">
+            {{data.title}}
+        </div>
+        <div class="card-body">
+            <h6 class="card-title">
+                <form action='{% url "index" %}' method='get'>
+                        <div class='form-group'>
+                            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModalCenter">
+                                <input type="submit" class="btn btn-outline-primary" value="#{{data.hash_key}}">
+                            </button>
+                        </div>
+                </form>
+            </h6>
+            <p class="card-text">{{data.content}}</p>
+        </div>
+    </div>
     <td><a href='{% url "index" %}' class='btn btn-outline-secondary'>戻る</a></td>
     </table>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    {% for data in all_data %}
+                        <h5>{{data.title}}</h5>
+                        <p>{{data.content}}</p>
+                        <hr>
+                    {% endfor %}
+                <div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 {% endblock %}

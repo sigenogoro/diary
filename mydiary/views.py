@@ -21,10 +21,12 @@ def index(request):
 
 def detail(request, num):
     data = Document.objects.get(id=num)
+    all_data = Document.objects.all()
     params = {
         'title': 'Record_detail',
         'id': num,
-        'data': data
+        'data': data,
+        'all_data': all_data
     }
     return render(request, 'mydiary/detail.html', params)
 
