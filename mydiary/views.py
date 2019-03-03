@@ -33,7 +33,7 @@ def create(request):
         record_info = recordFrom(request.POST)
         if record_info.is_valid():
             record_info.save()
-            return redirect(to='/mydiary')
+            return redirect(to='/')
     params = {
         'title': 'Record_info',
         'msg': recordFrom()
@@ -45,7 +45,7 @@ def edit(request, num):
     if (request.method == "POST"):
         record_edit = recordFrom(request.POST, instance=data)
         record_edit.save()
-        return redirect(to='/mydiary')
+        return redirect(to='/')
     params = {
         'title': 'Record_edit',
         'id': num,
@@ -57,7 +57,7 @@ def delete(request, num):
     del_obj = Document.objects.get(id=num)
     if (request.method == "POST"):
         del_obj.delete()
-        return redirect(to='/mydiary')
+        return redirect(to='/')
     params = {
         'title': 'Record_edit',
         'id': num,
