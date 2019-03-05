@@ -8,7 +8,7 @@ def index(request):
     searchform = SearchForm(request.GET)
     if searchform.is_valid(): #=>値があるかどうか
         keyword = searchform.cleaned_data['keyword']
-        data = Document.objects.filter(content__contains=keyword)
+        data = Document.objects.filter(related_hash__contains=keyword)
     else:
         searchform = SearchForm()
         data = Document.objects.all()
