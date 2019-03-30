@@ -21,17 +21,16 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                  <h5 class="modal-title" id="exampleModalCenterTitle">関連リンク({{data.related_hash}})</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                    <h5>Popover in a modal</h5>
-                        <p>This <a href="#" role="button" class="btn btn-secondary popover-test" title="Popover title" data-content="Popover body content is set in this attribute.">button</a> triggers a popover on click.</p>
+                    {% for search in search_data %}
+                        <p><a href='{% url "detail" search.id%}' class="tooltip-test" title="Tooltip">{{search.title}}</a></p>
                         <hr>
-                        <h5>Tooltips in a modal</h5>
-                        <p><a href="#" class="tooltip-test" title="Tooltip">This link</a> and <a href="#" class="tooltip-test" title="Tooltip">that link</a> have tooltips on hover.</p>
+                    {% endfor %}
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
