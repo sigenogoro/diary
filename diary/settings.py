@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'widget_tweaks',
-    'mydiary'
+    'mydiary',
+    'schedule'
 ]
 
 MIDDLEWARE = [
