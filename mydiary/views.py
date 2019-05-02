@@ -37,7 +37,7 @@ def create(request):
             record_info.save()
             return redirect(to='/')
     params = {
-        'title': 'Record_info',
+        'title': 'Record_info(振り返り)',
         'msg': recordFrom()
     }
     return render(request, 'mydiary/create.html', params)

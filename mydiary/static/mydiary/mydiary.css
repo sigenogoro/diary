@@ -1,0 +1,25 @@
+.test{
+    color: red;
+}
+.label_create_right{
+    margin-right: 50%;
+}
+
+.label_create_left{
+    margin-right: 50%;
+}
+
+.context-form{
+    float: left;
+    padding-right: 15px;
+}
+
+.create_content{
+    height: 500px;
+    width:100%;
+}
+
+.action-form{
+    float: left;
+    padding-left: 100px;
+}
