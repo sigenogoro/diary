@@ -9,4 +9,4 @@ class Document(models.Model):
     day = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return 'title：'+ self.title +'  '+ 'content：' + self.content + 'next_action：' + self.next_action + ' +  ' +'related_hash：' +  self.related_hash + '  ' +'day：' +  str(self.day)
+        return 'title：'+ self.title +'  '+ 'content：' + self.content + 'next_action：' + self.next_action +'related_hash：' +  self.related_hash + '  ' +'day：' +  str(self.day)
