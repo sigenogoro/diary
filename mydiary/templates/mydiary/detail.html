@@ -14,7 +14,7 @@
             <p class="card-text">{{data.content| linebreaksbr}}</p>
         </div>
     </div>
-    <td><a href='{% url "index" %}' class='btn btn-outline-secondary'>戻る</a></td>
+    <td><a href='{% url "mydiary:index" %}' class='btn btn-outline-secondary'>戻る</a></td>
     </table>
 
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -28,13 +28,12 @@
                 </div>
                 <div class="modal-body">
                     {% for search in search_data %}
-                        <p><a href='{% url "detail" search.id%}' class="tooltip-test" title="Tooltip">{{search.title}}</a></p>
+                        <p><a href='{% url "mydiary:detail" search.id%}' class="tooltip-test" title="Tooltip">{{search.title}}</a></p>
                         <hr>
                     {% endfor %}
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>

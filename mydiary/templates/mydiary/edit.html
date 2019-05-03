@@ -3,11 +3,11 @@
 {% load bootstrap4 %}
     <h1>{{title}}</h1>
     <table>
-        <form action="{% url 'edit' id %}" method="post">
+        <form action="{% url 'mydiary:edit' id %}" method="post">
             {% csrf_token %}
             {% bootstrap_form msg layout='horizontal' %}
             <td></td><td><input type="submit" value="click" class="btn btn-outline-primary"></td>
-            <td><a href='{% url "index" %}' class='btn btn-outline-secondary'>戻る</a></td>
+            <td><a href='{% url "mydiary:index" %}' class='btn btn-outline-secondary'>戻る</a></td>
         </form>
     </table>
 {% endblock %}

@@ -1,15 +1,17 @@
-{% extends './base.html' %}
+{% extends 'mydiary/base.html' %}
 {% load bootstrap4 %}
+
+
 {% block content %}
 
-<h1>{{title}}</h1>
+    <h1>{{title}}</h1>
 
-<table>
-    <form action="{% url 'create' %}" method="post" class='form'>
-        {% csrf_token %}
-        {% bootstrap_form msg %}
-        <td></td><td><input type="submit" value="click" class="btn btn-outline-primary"></td>
-        <td><a href='{% url "index" %}' class='btn btn-outline-secondary'>戻る</a></td>
-    </form>
-</table>
+    <table>
+        <form action="{% url 'mydiary:create' %}" method="post" class='form'>
+            {% csrf_token %}
+            {% bootstrap_form msg %}
+            <td></td><td><input type="submit" value="click" class="btn btn-outline-primary"></td>
+            <td><a href='{% url "mydiary:index" %}' class='btn btn-outline-secondary'>戻る</a></td>
+        </form>
+    </table>
 {% endblock %}

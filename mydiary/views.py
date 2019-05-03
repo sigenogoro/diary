@@ -66,3 +66,4 @@ def delete(request, num):
         'msg': del_obj
     }
     return render(request, 'mydiary/delete.html', params)
+
