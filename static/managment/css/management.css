@@ -1,0 +1,21 @@
+.fa-check-circle{
+    color: rgb(45, 228, 54);
+}
+
+.advance_task h1{
+    color: red;
+}
+
+.advance_task{
+    float: left;
+    width: 60%;
+}
+
+.completed_task{
+    display:block;
+}
+
+.aks{
+    float: right;
+    text-align: right;
+}

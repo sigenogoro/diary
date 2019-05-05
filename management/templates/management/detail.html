@@ -1,0 +1,48 @@
+{% extends 'management/base.html' %}
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="advance_task">
+        <h1>進行中</h1>
+        <div class="card border-primary mb-3" style="max-width: 18rem;" id='ajax_task'>
+            <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">高</span></div>
+                <div class="card-body text-primary">
+                    <p class="card-text">進行タスクを作り出す</p>
+                </div>
+        </div>
+        <div class="card border-primary mb-3" style="max-width: 18rem;" id='ajax_task'>
+            <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">中</span></div>
+                <div class="card-body text-primary">
+                    <p class="card-text">完了タスクを作る</p>
+                </div>
+        </div>
+        <div class="card border-primary mb-3" style="max-width: 18rem;" id='ajax_task'>
+            <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">小</span></div>
+                <div class="card-body text-primary">
+                <p class="card-text">動かせるようにする</p>
+            </div>
+        </div>
+    </div>
+    <div class="completed_task">
+        <h1>完了タスク</h1>
+        <div class="card border-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">高</span></div>
+                <div class="card-body text-primary">
+                    <p class="card-text">進行タスクを作り出す</p>
+                </div>
+        </div>
+        <div class="card border-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">中</span></div>
+                <div class="card-body text-primary">
+                    <p class="card-text">完了タスクを作る</p>
+                </div>
+        </div>
+        <div class="card border-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">小</span></div>
+                <div class="card-body text-primary">
+                    <p class="card-text">動かせるようにする</p>
+                </div>
+        </div>
+    </div>
+{% endblock %}

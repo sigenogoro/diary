@@ -3,7 +3,8 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    params = {
-        'title': 'プロジェクト進行状況',
-    }
-    return render(request, 'management/index.html', params)
+    return render(request, 'management/index.html')
+
+def project_detail(request):
+    return render(request, 'management/detail.html')
+
