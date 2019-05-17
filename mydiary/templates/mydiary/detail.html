@@ -12,6 +12,8 @@
             </button>
             <hr>
             <p class="card-text">{{data.content| linebreaksbr}}</p>
+            <hr>
+            <p class="card_text">{{data.next_action| linebreaksbr}}</p>
         </div>
     </div>
     <td><a href='{% url "mydiary:index" %}' class='btn btn-outline-secondary'>戻る</a></td>

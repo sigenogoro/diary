@@ -3,29 +3,55 @@
 {% load bootstrap4 %}
 
 {% block content %}
-    <div class="advance_task">
-        <h1>進行中</h1>
-        <div class="card border-primary mb-3" style="max-width: 18rem;" id='ajax_task'>
+    <div class="remaining_task">
+        <h3>残タスク（全て見られるようにする）</h3>
+        <div class="card border-primary mb-3" style="max-width: 18rem;" cursor: move; draggable="true">
             <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">高</span></div>
                 <div class="card-body text-primary">
-                    <p class="card-text">進行タスクを作り出す</p>
+                    <p class="card-text">JSの勉強</p>
                 </div>
         </div>
-        <div class="card border-primary mb-3" style="max-width: 18rem;" id='ajax_task'>
+        <div class="card border-primary mb-3" style="max-width: 18rem;">
             <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">中</span></div>
                 <div class="card-body text-primary">
-                    <p class="card-text">完了タスクを作る</p>
+                    <p class="card-text">タスクの編集ページ</p>
                 </div>
         </div>
-        <div class="card border-primary mb-3" style="max-width: 18rem;" id='ajax_task'>
+        <div class="card border-primary mb-3" style="max-width: 18rem;" >
             <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">小</span></div>
                 <div class="card-body text-primary">
-                <p class="card-text">動かせるようにする</p>
+                <p class="card-text">残タスクから進行中に進めること</p>
             </div>
         </div>
+        <div class="add_task">
+            <i class="fas fa-plus"></i>
+        </div>
     </div>
+
+    <div class="advance_task">
+            <h3>進行中</h3>
+            <div class="card border-primary mb-3" style="max-width: 18rem;" cursor: move; draggable="true">
+                <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">高</span></div>
+                    <div class="card-body text-primary">
+                        <p class="card-text">追加タスクを作る（一画面で仕上げたい)モーダル式で行う</p>
+                    </div>
+            </div>
+            <div class="card border-primary mb-3" style="max-width: 18rem;">
+                <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">中</span></div>
+                    <div class="card-body text-primary">
+                        <p class="card-text">index画面にtable型を作る</p>
+                    </div>
+            </div>
+            <div class="card border-primary mb-3" style="max-width: 18rem;" >
+                <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">小</span></div>
+                    <div class="card-body text-primary">
+                    <p class="card-text">完了はチェックマーク型（優先度と同じ)</p>
+                </div>
+            </div>
+        </div>
+
     <div class="completed_task">
-        <h1>完了タスク</h1>
+        <h3>完了タスク</h3>
         <div class="card border-primary mb-3" style="max-width: 18rem;">
             <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">高</span></div>
                 <div class="card-body text-primary">
@@ -44,5 +70,11 @@
                     <p class="card-text">動かせるようにする</p>
                 </div>
         </div>
+        <p class="pasent">完了タスク/(残タスク+進行タスク)</p>
     </div>
+
+    <script>
+
+    </script>
 {% endblock %}
+

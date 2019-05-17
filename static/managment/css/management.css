@@ -2,13 +2,18 @@
     color: rgb(45, 228, 54);
 }
 
-.advance_task h1{
+.advance_task h3{
     color: red;
+}
+
+.remaining_task{
+    float: left;
+    width: 35%;
 }
 
 .advance_task{
     float: left;
-    width: 60%;
+    width: 35%;
 }
 
 .completed_task{
@@ -18,4 +23,24 @@
 .aks{
     float: right;
     text-align: right;
+}
+
+#ajax_task{
+    cursor: move;
+}
+
+.pasent{
+    text-align: right;
+    padding-right: 70px;
+}
+
+.add_task{
+    padding:  0.5em 8em;
+    margin: 1em 0;
+    font-weight: bold;
+    color: #6091d3;/*文字色*/
+    background: #FFF;
+    border: solid 3px #6091d3;/*線*/
+    border-radius: 10px;
+    width: 70%;
 }
