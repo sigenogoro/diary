@@ -1,5 +1,6 @@
 {% extends 'mydiary/base.html' %}
 {% load bootstrap4 %}
+{% load widget_tweaks %}
 
 
 {% block content %}
@@ -9,9 +10,47 @@
     <table>
         <form action="{% url 'mydiary:create' %}" method="post" class='form'>
             {% csrf_token %}
-            {% bootstrap_form msg %}
+            <div class="form-group">
+                <label>タイトル</label>
+                {{msg.title|add_class:"form-control"}}
+                <label>コンテンツ</label><span class="btn btn-outline-primary btn-sm">音声記述</span>
+                {{msg.content|add_class:"form-control"}}
+                <label>次へのアクション</label><span class="btn btn-outline-primary btn-sm">音声記述</span>
+                {{msg.next_action|add_class:"form-control"}}
+                <label>関連ハッシュ</label>
+                {{msg.related_hash|add_class:"form-control"}}
+                <label>日付</label>
+                {{msg.day|add_class:"form-control"}}
+            </div>
             <td></td><td><input type="submit" value="click" class="btn btn-outline-primary"></td>
             <td><a href='{% url "mydiary:index" %}' class='btn btn-outline-secondary'>戻る</a></td>
         </form>
     </table>
+
+
+    <!-- テキストを音声認識をさせる時 -->
+    <script>
+        {
+            SpeechRecognition = webkitSpeechRecognition || SpeechRecognition;
+            const speech = new SpeechRecognition();
+            speech.lang = 'ja-JP';
+
+            // #条件を決める
+            const btn = document.getElementsByClassName('btn btn-outline-primary btn-sm')[0];
+            console.log(btn);
+
+            btn.addEventListener('click',() => {
+                // 2回押して、2回起動しないようにする
+                btn.disabled = true;
+                speech.start();
+            });
+
+            speech.onresult = (e) => {
+                speech.stop();
+                if(e.results[0].isFinal){
+                    id_next_action.value = e.results[0][0].transcript;
+                }
+            };
+        }
+</script>
 {% endblock %}

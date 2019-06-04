@@ -2,3 +2,8 @@ h1{
     padding-bottom: .5em;
     border-bottom: 1px solid #ccc;
 }
+
+ span{
+     color: red;
+     margin-left: 10px;
+ }
