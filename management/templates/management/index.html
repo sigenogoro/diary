@@ -1,6 +1,8 @@
 {% extends 'management/base.html' %}
 {% load widget_tweaks %}
 
+
+
 {% block content %}
     <div class="project-box">
         <table class="table table-hover">
@@ -47,5 +49,16 @@
         </table>
     </div>
 
-    <h3>優先度が高く期限が迫っているタスクを表示する(プロジェクト関係なく)</h3>
+    <div class="card-group">
+        <div class="card border-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">中</span></div>
+                <div class="card-body text-primary">
+                    <p class="card-text">タスクの編集ページ</p>
+                </div>
+        </div>
+    </div>
+
+    <script>
+
+    </script>
 {% endblock %}
