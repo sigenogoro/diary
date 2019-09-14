@@ -1,7 +1,11 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
 .fa-check-circle{
     color: rgb(45, 228, 54);
 }
-
 .advance_task h3{
     color: red;
 }
@@ -21,8 +25,8 @@
 }
 
 .aks{
-    float: right;
-    text-align: right;
+    width: 50px;
+    height: auto;
 }
 
 #ajax_task{
@@ -45,6 +49,7 @@
     width: 70%;
 }
 
+
 @keyframes fade-in {
     from {
       opacity: 0;
@@ -54,8 +59,28 @@
     }
   }
 
-  .card-group {
-    animation-name: fade-in;
-    animation-duration: 3s;
-  }
-  
+.card-group {
+    animation: fade-in 3s;
+}
+
+td.bar {
+    width: 300px;
+}
+
+/* detail.htmlのCSS */
+
+.main {
+    display: flex;
+}
+
+.side-task {
+    background-color: #EEEEEE;
+    height: 960px;
+    width: 30%;
+    border-right: solid 2px blue;
+}
+
+.cy {
+    width: 70%;
+    background-color: red;
+}

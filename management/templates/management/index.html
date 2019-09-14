@@ -1,8 +1,6 @@
 {% extends 'management/base.html' %}
 {% load widget_tweaks %}
 
-
-
 {% block content %}
     <div class="project-box">
         <table class="table table-hover">
@@ -17,38 +15,35 @@
                 </tr>
             </thead>
             <tbody>
+                {% for project in projects %}
                 <tr>
-                    <th scope="row">1</th>
-                    <td><a href="{% url 'management:project_detail' %}">diaryのタスク管理各リンク</a></td>
+                    {% if project.days_left <= 0 %}
+                        <th scope="row"><input type="checkbox"></th>
+                    {% else %}
+                    <th scope="row"></th>
+                    {% endif %}
+                    <td><a href="{% url 'management:project_detail' %}">{{project.project_name}}</a></td>
                     <td>難航</td>
-                    <td>
+                    <td class="bar">
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75"  aria-valuemin="0" aria-valuemax="100">75%</div>
                         </div>
                     </td>
-                    <td>残りあと2日</td>
-                    <td>高</td>
+                    {% if project.days_left > 0 %}
+                        <td>残り{{project.days_left}}日</td>
+                    {% elif project.days_left == 0 %}
+                        <td>終了日</td>
+                    {% else %}
+                        <td>{{project.days_left}}日経過</td>
+                    {% endif %}
+                    <!-- 優先度を文字にしている。数字にしないほうが良いのか？とりあえずこのまま・・・ -->
+                    <td>{{ project.change_str }}</td>
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>diaryのタスク管理各リンク</td>
-                    <td>完了</td>
-                    <td><i class="far fa-check-circle"></i></td>
-                    <td>残りあと2日</td>
-                    <td>普</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>diaryのスケジュール管理</td>
-                    <td>難航</td>
-                    <td>0 ~ 100%のタスクバーを使う予定</td>
-                    <td>残りあと2日</td>
-                    <td>低</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
-
+    <!-- fadeInのような動作は、management.cssのAnimetionで設定している -->
     <div class="card-group">
         <div class="card border-primary mb-3" style="max-width: 18rem;">
             <div class="card-header">プロジェクト名<span class="badge badge-primary badge-pill aks">中</span></div>
@@ -57,8 +52,50 @@
                 </div>
         </div>
     </div>
+    <!-- モーダル表示にする -->
+    <div class="modal fade" id="add_task_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>プロジェクト作成します！！</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'management:create_project' %}" method="POST">
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">プロジェクト名:</label>
+                            <input type="text" class="form-control" name="project_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">優先度:</label>
+                            <!-- １つ目のfor文は、「優先度」に入っている「高中小」を取り出す -->
+                            <!-- 2つ目は、「高中小」を順番に取り出す -->
+                            {% for field in form %}
+                                {% for c in field %}
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <!-- <input type="radio" id="customRadioInline1" name="" value="0" class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadioInline1">高</label> -->
+                                        {{c}}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            <div class="form-group">
+                                <p>期限: <input type="text" id="datepicker" name="date"></p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-secondary" data-dismiss="modal" value="戻る">
+                            <input type="submit" class="btn btn-primary" value="プロジェクトスタート">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-
+        $(function(){
+            $('#datepicker').datepicker();
+        });
     </script>
 {% endblock %}
