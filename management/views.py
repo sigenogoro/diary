@@ -27,6 +27,20 @@ def project_detail(request, num):
     }
     return render(request, 'management/detail.html', project_form)
 
+def big_task_detail(request, num):
+    big_task = ProjectTask.objects.get(id=num)
+    project = ProjectManagement.objects.get(project_id=big_task.big_task_id)
+    all_middle_task = big_task.middletask_set.all() #projecttask_set　リレーションしている値をとりだす
+    all_project = project.projecttask_set.all()
+    current_time = date.today()
+    project_form = {
+        'id': num,
+        'form': PriorityForm(),
+        'projects': all_project,
+        'big_tasks': all_middle_task
+    }
+    return render(request, 'management/detail.html', project_form)
+
 # プロジェクト作り
 def create_project(request):
     if request.method == "POST":
@@ -53,10 +67,11 @@ def create_task(request, num):
             )
             return redirect('management:project_detail', num=num)
         elif request.POST.get("tasktype", "") == "middle-task":
+            get_big_task_id = ProjectTask.objects.get(id=num)
             MiddleTask.objects.create(
                 middle_task_name = request.POST['task'],
                 priority = request.POST['priority'],
                 end_task = change_date,
                 middle_task = ProjectTask.objects.get(id=num)
             )
-            return redirect('management:project_detail', num=num)
+            return redirect('management:big_task_detail', num=num)

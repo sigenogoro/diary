@@ -8,5 +8,6 @@ urlpatterns = [
     path('create_project/',views.create_project, name='create_project'),
     path('mydiary/', mydiary.views.index, name='change'),
     path('detail/<int:num>', views.project_detail, name ='project_detail'),
+    path('detail/2/<int:num>', views.big_task_detail, name ='big_task_detail'),
     path('create_task/<int:num>', views.create_task, name="create_task")
 ]

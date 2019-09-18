@@ -46,5 +46,11 @@ class MiddleTask(models.Model):
     id = models.AutoField(primary_key=True)
     middle_task_name = models.CharField(max_length=100)
     priority = models.IntegerField()
-    middle_task = models.ForeignKey(ProjectTask, to_field="id" ,on_delete=models.CASCADE)
+    middle_task = models.ForeignKey(ProjectTask, to_field="id", on_delete=models.CASCADE)
     end_task = models.DateField()
+
+    def change_str(self):
+        choice = [(0, '高'),(1, '中'),(2, '低')]
+        for k, y in choice:
+            if k == self.priority:
+                return y

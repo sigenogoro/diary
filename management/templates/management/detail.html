@@ -17,13 +17,13 @@
                     {% for project in projects %}
                         <tr>
                             <th scope="row"><input type="checkbox"></th>
-                            <td><a href="#">{{project.title}}</a></td>
+                            <td><a href="{% url 'management:big_task_detail' project.id %}">{{project.title}}</a></td>
                             <td><span class="badge badge-pill badge-success aks">{{project.change_str}}</span></td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <a id="task_name" data-toggle="modal" data-target="#add_task_modal" data-whatever="big-task">プロジェクト新規</a>
+            <a onclick="task_name(this);" id="big_task" data-toggle="modal" data-target="#add_task_modal" data-whatever="big-task">達成タスク作成</a>
         </div>
         <div class="task">
             <main role="main" class="container">
@@ -31,24 +31,19 @@
                     <h6 class="border-bottom border-gray pb-2 mb-0">今週のタスク（入力でできるようにする）</h6>
                     <table class="table">
                         <tbody>
+                            {% for big_task in big_tasks %}
                             <tr>
                                 <th scope="row"><input type="checkbox"></th>
-                                <td>チェックボックスをクリック後に消えるようにする</td>
-                                <td><span class="badge badge-pill badge-success box-priority">高</span></td>
+                                <td>{{big_task.middle_task_name}}</td>
+                                <td><span class="badge badge-pill badge-success box-priority">{{big_task.change_str}}</span></td>
                                 <td>あと1日</td>
                                 <td>1</td>
                             </tr>
-                            <tr>
-                                <th scope="row"><input type="checkbox"></th>
-                                <td>チェックボックスをクリックしたら、「達成率」が変化する</td>
-                                <td><span class="badge badge-pill badge-success box-priority">高</span></td>
-                                <td>あと2日</td>
-                                <td>2</td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                     <!-- task_nameに変えておくこと -->
-                    <a id="task_names" data-toggle="modal" data-target="#add_task_modal"data-whatever="middle-task" >追加</a>
+                    <a onclick="task_name(this);" id="middle-task" data-toggle="modal" data-target="#add_task_modal"data-whatever="middle-task" >追加</a>
                 </div>
                 <div class="my-3 p-3 bg-white rounded box-shadow">
                     <h6 class="border-bottom border-gray pb-2 mb-0">今日のタスク（入力でできるようにする）</h6>
@@ -109,7 +104,7 @@
                         <h5>タスクを作成します！！</h5>
                     </div>
                     <div class="modal-body">
-                        <form action="{% url 'management:create_task' id %}" method="POST">
+                        <form action="{% url 'management:create_task' id  %}" method="POST">
                         {% csrf_token %}
                             <div class="form-group">
                                 <label for="message-text" class="col-form-label">タスク名:</label>
@@ -145,10 +140,12 @@
 
 
     <script>
-        const get_id = document.getElementById('task_names').dataset.whatever;
-        const result = document.forms[0].tasktype;
-        console.log( get_id );
-        result.value = get_id;
+        function task_name(tasktype){
+            var get_id = tasktype.dataset.whatever;
+            const result = document.forms[0].tasktype;
+            console.log( get_id );
+            result.value = get_id;
+        }
         $(function(){
             $('#datepicker').datepicker();
         });
