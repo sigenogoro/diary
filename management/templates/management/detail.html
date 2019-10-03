@@ -17,7 +17,7 @@
                     {% for big_task in big_tasks %}
                         <tr>
                             <th scope="row"><input type="checkbox"></th>
-                            <td><a href="{% url 'management:middle_task_detail' big_task.id %}">{{big_task.title}}</a></td>
+                            <td><a href="{% url 'management:middle_task_detail' big_task.id %}">{{big_task.name}}</a></td>
                             <td><span class="badge badge-pill badge-success aks">{{big_task.change_str}}</span></td>
                         </tr>
                     {% endfor %}
@@ -35,9 +35,9 @@
                             <tbody>
                                 {% for middle_task in middle_tasks %}
                                     <tr>
-                                        {% if middle_task.middle_task_flag == 0 %}
+                                        {% if middle_task.flag == 0 %}
                                             <th scope="row"><input type="checkbox" name="checks" value="{{middle_task.id}}"></th>
-                                        <td><a href="{% url 'management:small_task_detail' middle_task.id %}">{{middle_task.middle_task_name}}</a></td>
+                                        <td><a href="{% url 'management:small_task_detail' middle_task.id %}">{{middle_task.name}}</a></td>
                                         <td><span class="badge badge-pill badge-success box-priority">{{middle_task.change_str}}</span></td>
                                         {% if middle_task.days_left > 0 %}
                                             <td>残り{{middle_task.days_left}}日</td>
@@ -63,7 +63,7 @@
                             {% for small_task in small_tasks %}
                             <tr>
                                 <th scope="row"><input type="checkbox"></th>
-                                <td>{{small_task.small_task_name}}</td>
+                                <td>{{small_task.name}}</td>
                                 <td><span class="badge badge-pill badge-success box-priority">{{small_task.change_str}}</span></td>
                                 <td>あと1日</td>
                                 <td>1</td>
