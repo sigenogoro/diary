@@ -22,7 +22,7 @@
                     {% else %}
                     <th scope="row"></th>
                     {% endif %}
-                    <td><a href="{% url 'management:big_task_detail' project.project_id %}">{{project.project_name}}</a></td>
+                    <td><a href="{% url 'management:big_task_detail' project.project_id %}">{{project.name}}</a></td>
                     <td>難航</td>
                     <td class="bar">
                         <div class="progress">

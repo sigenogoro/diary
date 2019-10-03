@@ -77,7 +77,7 @@ def create_project(request):
         str_date = datetime.strptime(request.POST['date'], "%m/%d/%Y")
         change_date = str_date.strftime('%Y-%m-%d')
         ProjectManagement.objects.create(
-            project_name = request.POST['name'],
+            name = request.POST['name'],
             priority = request.POST['priority'],
             end_date = change_date,
         )
@@ -90,26 +90,26 @@ def create_task(request, num):
         change_date =  str_date.strftime('%Y-%m-%d')
         if request.POST.get("tasktype", "") == "big-task":
             ProjectTask.objects.create(
-                title = request.POST['name'],
+                name = request.POST['name'],
                 priority = request.POST['priority'],
                 end_date = change_date,
-                big_task = ProjectManagement.objects.get(project_id=num)
+                task = ProjectManagement.objects.get(project_id=num)
             )
             return redirect('management:big_task_detail', num=num)
         elif request.POST.get("tasktype", "") == "middle-task":
             MiddleTask.objects.create(
-                middle_task_name = request.POST['name'],
+                name = request.POST['name'],
                 priority = request.POST['priority'],
                 end_date = change_date,
-                middle_task = ProjectTask.objects.get(id=num)
+                task = ProjectTask.objects.get(id=num)
             )
             return redirect('management:middle_task_detail', num=num)
         elif request.POST.get("tasktype", "") == "small-task":
             get_middle_task_id = MiddleTask.objects.get(id=num)
             SmallTask.objects.create(
-                small_task_name = request.POST['name'],
+                name = request.POST['name'],
                 priority = request.POST['priority'],
                 end_date = change_date,
-                small_task = get_middle_task_id
+                task = get_middle_task_id
             )
             return redirect('management:small_task_detail', num=num)
