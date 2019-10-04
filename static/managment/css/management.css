@@ -106,3 +106,8 @@ td.bar {
     margin: auto;
     padding-top: 20px;
 }
+
+.fx {
+    float: left;
+    margin-right: 5%;
+}

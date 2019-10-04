@@ -1,0 +1,26 @@
+{% extends 'management/middle_task.html' %}
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+
+
+{% block small_task %}
+    <div class="my-3 p-3 bg-white rounded box-shadow">
+        <h6 class="border-bottom border-gray pb-2 mb-0">今日のタスク（入力でできるようにする）</h6>
+        <table class="table">
+            <tbody>
+                {% for small_task in small_tasks %}
+                <tr>
+                    <th scope="row"><input type="checkbox"></th>
+                    <td>{{small_task.name}}</td>
+                    <td><span class="badge badge-pill badge-success box-priority">{{small_task.change_str}}</span></td>
+                    <td>あと1日</td>
+                    <td>1</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input onclick="task_name(this);" type="submit" class="btn btn-primary" id="small-task" data-toggle="modal" data-target="#add_task_modal"data-whatever="small-task" value="追加">
+    </div>
+
+    
+{% endblock %}

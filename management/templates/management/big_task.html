@@ -1,0 +1,29 @@
+{% extends 'management/detail.html' %}
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+
+{% block big_task %}
+    <div class="side-task">
+        <table class="table">
+            <thead class="thead">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">達成タスク</th>
+                    <th scope="col">優先度</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for big_task in big_tasks %}
+                    <tr>
+                        <th scope="row"><input type="checkbox"></th>
+                        <td><a href="{% url 'management:middle_task_detail' big_task.task.project_id  big_task.id %}">{{big_task.name}}</a></td>
+                        <td><span class="badge badge-pill badge-success aks">{{big_task.change_str}}</span></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" class="btn btn-primary"  onclick="task_name(this);" id="big_task" data-toggle="modal" data-target="#add_task_modal" data-whatever="big-task" value="達成タスク作成">
+    </div>
+
+
+{% endblock %}

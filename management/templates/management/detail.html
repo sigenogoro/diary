@@ -1,78 +1,15 @@
 {% extends 'management/base.html' %}
+{% include 'management/big_task.html'%}
 {% load widget_tweaks %}
 {% load bootstrap4 %}
 
 {% block content %}
     <div class="main-content">
-        <div class="side-task">
-            <table class="table">
-                <thead class="thead">
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">達成タスク</th>
-                        <th scope="col">優先度</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for big_task in big_tasks %}
-                        <tr>
-                            <th scope="row"><input type="checkbox"></th>
-                            <td><a href="{% url 'management:middle_task_detail' big_task.id %}">{{big_task.name}}</a></td>
-                            <td><span class="badge badge-pill badge-success aks">{{big_task.change_str}}</span></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <a onclick="task_name(this);" id="big_task" data-toggle="modal" data-target="#add_task_modal" data-whatever="big-task">達成タスク作成</a>
-        </div>
+        {% block big_task %}{% endblock %}
         <div class="task">
             <main role="main" class="container">
-                <div class="my-3 p-3 bg-white rounded box-shadow">
-                    <h6 class="border-bottom border-gray pb-2 mb-0">今週のタスク（入力でできるようにする）</h6>
-                    <form action="{% url 'management:update_task' id %}" method="POST">
-                        {% csrf_token %}
-                        <table class="table">
-                            <tbody>
-                                {% for middle_task in middle_tasks %}
-                                    <tr>
-                                        {% if middle_task.flag == 0 %}
-                                            <th scope="row"><input type="checkbox" name="checks" value="{{middle_task.id}}"></th>
-                                        <td><a href="{% url 'management:small_task_detail' middle_task.id %}">{{middle_task.name}}</a></td>
-                                        <td><span class="badge badge-pill badge-success box-priority">{{middle_task.change_str}}</span></td>
-                                        {% if middle_task.days_left > 0 %}
-                                            <td>残り{{middle_task.days_left}}日</td>
-                                        {% elif middle_task.days_left == 0 %}
-                                            <td>終了日</td>
-                                        {% else %}
-                                            <td>{{middle_task.days_left}}日経過</td>
-                                        {% endif %}
-                                        <td>{{middle_task.middle_task.big_task_id}}</td>
-                                        {% endif %}
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <input type="submit" class="btn btn-primary" value="更新">
-                    </form>
-                    <input type="submit" onclick="task_name(this);" data-toggle="modal" data-target="#add_task_modal"data-whatever="middle-task" value="追加">
-                </div>
-                <div class="my-3 p-3 bg-white rounded box-shadow">
-                    <h6 class="border-bottom border-gray pb-2 mb-0">今日のタスク（入力でできるようにする）</h6>
-                    <table class="table">
-                        <tbody>
-                            {% for small_task in small_tasks %}
-                            <tr>
-                                <th scope="row"><input type="checkbox"></th>
-                                <td>{{small_task.name}}</td>
-                                <td><span class="badge badge-pill badge-success box-priority">{{small_task.change_str}}</span></td>
-                                <td>あと1日</td>
-                                <td>1</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <a onclick="task_name(this);" id="small-task" data-toggle="modal" data-target="#add_task_modal"data-whatever="small-task">追加</a>
-                </div>
+                {% block middle_task %}{% endblock %}
+                {% block small_task %}{% endblock %}
                 <div class="p-3 bg-white rounded box-shadow todo-analysis">
                     <h6 class="border-bottom border-gray pb-2 mb-0">達成状況（固定）</h6>
                     <div class="card-flex">
@@ -116,7 +53,7 @@
                             <div class="form-group">
                                 <label for="message-text" class="col-form-label">タスク名:</label>
                                 <input type="text" class="form-control" name="name">
-                                <input type="hidden" name="tasktype">
+                                <input id= "taskname" type="hidden" name="tasktype">
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="col-form-label">優先度:</label>
@@ -147,12 +84,6 @@
 
 
     <script>
-        function task_name(tasktype){
-            var get_id = tasktype.dataset.whatever;
-            // task_nameメソッドによって、モーダル内の値を検索している。モーダル内のname属性が、「tasktype」と取得している
-            const result = document.forms[1].tasktype;
-            result.value = get_id;
-        }
 
         $(function(){
             $('#datepicker').datepicker();
