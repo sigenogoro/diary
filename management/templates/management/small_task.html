@@ -10,16 +10,25 @@
             <tbody>
                 {% for small_task in small_tasks %}
                 <tr>
-                    <th scope="row"><input type="checkbox"></th>
+                    <form action="{% url 'management:small_task_detail' small_task.task.task.task_id  small_task.task.task_id small_task.task_id   %}" method="POST">
+                        {% csrf_token %}
+                        <th scope="row"><input type="checkbox" name="flag" value="{{small_task.id}}" ></th>
                     <td>{{small_task.name}}</td>
                     <td><span class="badge badge-pill badge-success box-priority">{{small_task.change_str}}</span></td>
-                    <td>あと1日</td>
-                    <td>1</td>
+                    {% if small_task.days_left > 0 %}
+                        <td>残り{{small_task.days_left}}日</td>
+                    {% elif small_task.days_left == 0 %}
+                        <td>終了日</td>
+                    {% else %}
+                        <td>{{small_task.days_left}}日経過</td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <input onclick="task_name(this);" type="submit" class="btn btn-primary" id="small-task" data-toggle="modal" data-target="#add_task_modal"data-whatever="small-task" value="追加">
+        <input type="submit" class="btn btn-primary fx" value="更新">
+    </form>
+    <input onclick="task_name(this);" type="submit" class="btn btn-primary" id="small-task" data-toggle="modal" data-target="#add_task_modal"data-whatever="small-task" value="追加">
     </div>
 
     

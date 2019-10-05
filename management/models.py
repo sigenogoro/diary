@@ -7,7 +7,7 @@ class ProjectManagement(models.Model):
     priority = models.IntegerField()
     end_date = models.DateField()
     project_id = models.AutoField(primary_key=True)
-    flag = models.IntegerField(default=0)
+    flag = models.BooleanField(default=False)
 
     #shellモードなどに使える + modelから呼び出すときに、この形で返ってくる
     def __str__(self):
@@ -33,7 +33,7 @@ class ProjectTask(models.Model):
     priority = models.IntegerField()
     task = models.ForeignKey(ProjectManagement, to_field='project_id', on_delete=models.CASCADE)
     end_date = models.DateField()
-    flag = models.IntegerField(default=0)
+    flag = models.BooleanField(default=False)
 
     def __str__(self):
         return 'id：'+ str(self.id) +'  ' + 'task_name：'+ self.name +'  '+  '  ' + 'Big_task_id：' +   str(self.task_id) + ' ' + 'project_id：' + str(self.task.project_id) + " " +"end_date：" + str(self.end_date)
@@ -54,7 +54,7 @@ class MiddleTask(models.Model):
     priority = models.IntegerField()
     task = models.ForeignKey(ProjectTask, to_field="id", on_delete=models.CASCADE)
     end_date = models.DateField()
-    flag = models.IntegerField(default=0)
+    flag = models.BooleanField(default=False)
 
     def __str__(self):
         return 'id：'+ str(self.id) +'  ' + 'task_name：'+ self.name +'  '+ '  ' + 'project_task_id：' +   str(self.task.task_id) + ' ' + 'Big_task_id：' + str(self.task_id) + " " +"end_date：" + str(self.end_date)
@@ -76,7 +76,7 @@ class SmallTask(models.Model):
     priority = models.IntegerField()
     task = models.ForeignKey(MiddleTask, to_field="id", on_delete=models.CASCADE)
     end_date = models.DateField()
-    flag = models.IntegerField(default=0)
+    flag = models.BooleanField(default=False)
 
     def change_str(self):
         choice = [(0, '高'),(1, '中'),(2, '低')]
@@ -89,5 +89,5 @@ class SmallTask(models.Model):
         return (self.end_date - current_date).days
 
     def __str__(self):
-        return 'id：' +  str(self.id) + " " + 'task_name：'+ self.name + " " + 'middle_task_id：' +   str(self.task_id) + ' ' + 'Big_task_id：' + str(self.middle_task.task_id) + " " +  "project_id："  +   str(self.middle.task.project_id) + "   " +"end_date：" + str(self.end_date)
+        return 'id：' +  str(self.id) + " " + 'task_name：'+ self.name + " " + 'middle_task_id：' +   str(self.task_id) + ' ' + 'Big_task_id：' + str(self.task.task_id) + " " +  "project_id："  +   str(self.task.task.task.project_id) + "   " +"end_date：" + str(self.end_date)
 

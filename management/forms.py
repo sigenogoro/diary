@@ -15,6 +15,3 @@ class DateForm(forms.Form):
 class PriorityForm(forms.Form):
     priority = forms.ChoiceField(label='優先度', choices=CHOICE, widget=forms.RadioSelect())
 
-
-
-

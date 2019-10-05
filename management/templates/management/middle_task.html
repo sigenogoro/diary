@@ -6,25 +6,23 @@
 {% block middle_task %}
 <div class="my-3 p-3 bg-white rounded box-shadow">
     <h6 class="border-bottom border-gray pb-2 mb-0">今週のタスク（入力でできるようにする）</h6>
-    <form action="{% url 'management:update_task' id %}" method="POST">
-        {% csrf_token %}
         <table class="table">
             <tbody>
                 {% for middle_task in middle_tasks %}
                     <tr>
-                        {% if middle_task.flag == 0 %}
-                            <th scope="row"><input type="checkbox" name="checks" value="{{middle_task.id}}"></th>
-                            <td><a href="{% url 'management:small_task_detail' middle_task.task.task_id middle_task.task_id middle_task.id %}">{{middle_task.name}}</a></td>
-                            <td><span class="badge badge-pill badge-success box-priority">{{middle_task.change_str}}</span></td>
-                            {% if middle_task.days_left > 0 %}
-                                <td>残り{{middle_task.days_left}}日</td>
-                            {% elif middle_task.days_left == 0 %}
-                                <td>終了日</td>
-                            {% else %}
-                                <td>{{middle_task.days_left}}日経過</td>
-                            {% endif %}
-                            <td>{{middle_task.middle_task.big_task_id}}</td>
+                        <form action="{% url 'management:middle_task_detail' middle_task.task.task_id middle_task.task_id  %}" method="POST">
+                            {% csrf_token %}
+                            <th scope="row"><input type="checkbox" name="flag" value="{{middle_task.id}}"></th>
+                        <td><a href="{% url 'management:small_task_detail' middle_task.task.task_id middle_task.task_id middle_task.id %}">{{middle_task.name}}</a></td>
+                        <td><span class="badge badge-pill badge-success box-priority">{{middle_task.change_str}}</span></td>
+                        {% if middle_task.days_left > 0 %}
+                            <td>残り{{middle_task.days_left}}日</td>
+                        {% elif middle_task.days_left == 0 %}
+                            <td>終了日</td>
+                        {% else %}
+                            <td>{{middle_task.days_left}}日経過</td>
                         {% endif %}
+                        <td>{{middle_task.middle_task.big_task_id}}</td>
                     </tr>
                 {% endfor %}
             </tbody>

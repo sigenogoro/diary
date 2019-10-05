@@ -4,67 +4,57 @@ from .forms import PriorityForm
 from .models import ProjectManagement, ProjectTask, MiddleTask, SmallTask
 from datetime import date
 from datetime import datetime
+import sys
 
 # Create your views here.
 def index(request):
     all_project = ProjectManagement.objects.all()
-    current_time = date.today()
     project_form = {
         'form': PriorityForm(),
         'projects': all_project,
     }
     return render(request, 'management/index.html', project_form)
 
-def update_task(request, num):
-    if request.method == "POST":
-        if request.POST.getlist('checks'):
-            # リスト型だが、文字列の数値のため、数値に変えました
-            list_checks = [int(i) for i in request.POST.getlist('checks')]
-            for i in list_checks:
-                middle_task = MiddleTask.objects.get(id=i)
-                middle_task.middle_task_flag = 1
-                middle_task.save()
-            return redirect('management:middle_task_detail', num=num)
-        return redirect(to='/management')
-
 #urls.pyのname属性からメソッドを分けている
 def big_task_detail(request, project_id):
+    task_flag(request, sys._getframe().f_code.co_name)
     project = ProjectManagement.objects.get(project_id=project_id)
-    all_project = project.projecttask_set.all() #projecttask_set　リレーションしている値をとりだす
-    current_time = date.today()
+    all_big_task = project.projecttask_set.filter(flag=0) #projecttask_set　リレーションしている値をとりだす
     project_form = {
         'id': project_id,
         'form': PriorityForm(),
-        'big_tasks': all_project,
+        'big_tasks': all_big_task,
     }
     return render(request, 'management/big_task.html', project_form)
 
 def middle_task_detail(request, project_id, big_id):
+    task_flag(request, sys._getframe().f_code.co_name)
     big_task = ProjectTask.objects.get(id=big_id)
     project = ProjectManagement.objects.get(project_id=big_task.task_id)
     all_middle_task = big_task.middletask_set.all() #projecttask_set　リレーションしている値をとりだす
-    all_project = project.projecttask_set.all()
-    current_time = date.today()
+    all_big_task = project.projecttask_set.all()
     project_form = {
         'id': big_id,
         'form': PriorityForm(),
-        'big_tasks': all_project,
+        'big_tasks': all_big_task,
         'middle_tasks': all_middle_task
     }
     return render(request, 'management/middle_task.html', project_form)
 
+
+
 def small_task_detail(request, project_id, big_id, middle_id):
+    task_flag(request, sys._getframe().f_code.co_name)
     middle_task = MiddleTask.objects.get(id=middle_id)
     big_task = ProjectTask.objects.get(id=middle_task.task_id)
     project = ProjectManagement.objects.get(project_id=big_task.task_id)
-    all_small_task = middle_task.smalltask_set.all()
-    all_middle_task = big_task.middletask_set.all() #projecttask_set　リレーションしている値をとりだす
-    all_project = project.projecttask_set.all()
-    current_time = date.today()
+    all_small_task = middle_task.smalltask_set.filter(flag=0)
+    all_middle_task = big_task.middletask_set.filter(flag=0) #projecttask_set　リレーションしている値をとりだす
+    all_big_task = project.projecttask_set.filter(flag=0)
     project_form = {
         'id': middle_id,
         'form': PriorityForm(),
-        'big_tasks': all_project,
+        'big_tasks': all_big_task,
         'middle_tasks': all_middle_task,
         'small_tasks': all_small_task
     }
@@ -126,3 +116,21 @@ def create_task(request, num):
                 task = get_middle_task
             )
             return redirect('management:small_task_detail', project_id=project_id, big_id=big_task_id, middle_id=get_middle_task.id)
+
+def task_flag(request, method_name):
+    task_flag = [int(i) for i in request.POST.getlist('flag')]
+    if method_name == "middle_task_detail":
+        for i in task_flag:
+            middle_task = MiddleTask.objects.get(id=i)
+            middle_task.flag = True
+            middle_task.save()
+    elif method_name == "small_task_detail":
+        for i in task_flag:
+            task = SmallTask.objects.get(id=i)
+            task.flag = True
+            task.save()
+    else:
+        for i in task_flag:
+            task = ProjectTask.objects.get(id=i)
+            task.flag = True
+            task.save()
