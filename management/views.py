@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from .forms import PriorityForm
-from .models import ProjectManagement, ProjectTask, MiddleTask, SmallTask
+from .models import ProjectManagement, ProjectTask, MiddleTask, SmallTask, get_total_task, get_today_task
 from datetime import date
 from datetime import datetime
 import sys
@@ -12,6 +12,8 @@ def index(request):
     project_form = {
         'form': PriorityForm(),
         'projects': all_project,
+        'total': get_total_task(),
+        'today_total': get_today_task(),
     }
     return render(request, 'management/index.html', project_form)
 
@@ -37,7 +39,7 @@ def middle_task_detail(request, project_id, big_id):
         'id': big_id,
         'form': PriorityForm(),
         'big_tasks': all_big_task,
-        'middle_tasks': all_middle_task
+        'middle_tasks': all_middle_task,
     }
     return render(request, 'management/middle_task.html', project_form)
 
@@ -56,7 +58,7 @@ def small_task_detail(request, project_id, big_id, middle_id):
         'form': PriorityForm(),
         'big_tasks': all_big_task,
         'middle_tasks': all_middle_task,
-        'small_tasks': all_small_task
+        'small_tasks': all_small_task,
     }
     return render(request, 'management/small_task.html', project_form)
 

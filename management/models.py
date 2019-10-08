@@ -7,6 +7,7 @@ class ProjectManagement(models.Model):
     priority = models.IntegerField()
     end_date = models.DateField()
     project_id = models.AutoField(primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     flag = models.BooleanField(default=False)
 
     #shellモードなどに使える + modelから呼び出すときに、この形で返ってくる
@@ -33,6 +34,7 @@ class ProjectTask(models.Model):
     priority = models.IntegerField()
     task = models.ForeignKey(ProjectManagement, to_field='project_id', on_delete=models.CASCADE)
     end_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
     flag = models.BooleanField(default=False)
 
     def __str__(self):
@@ -54,6 +56,7 @@ class MiddleTask(models.Model):
     priority = models.IntegerField()
     task = models.ForeignKey(ProjectTask, to_field="id", on_delete=models.CASCADE)
     end_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
     flag = models.BooleanField(default=False)
 
     def __str__(self):
@@ -76,6 +79,7 @@ class SmallTask(models.Model):
     priority = models.IntegerField()
     task = models.ForeignKey(MiddleTask, to_field="id", on_delete=models.CASCADE)
     end_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
     flag = models.BooleanField(default=False)
 
     def change_str(self):
@@ -91,3 +95,17 @@ class SmallTask(models.Model):
     def __str__(self):
         return 'id：' +  str(self.id) + " " + 'task_name：'+ self.name + " " + 'middle_task_id：' +   str(self.task_id) + ' ' + 'Big_task_id：' + str(self.task.task_id) + " " +  "project_id："  +   str(self.task.task.task.project_id) + "   " +"end_date：" + str(self.end_date)
 
+
+
+def get_total_task():
+    total_number_tasks = len(ProjectTask.objects.all()) + len(MiddleTask.objects.all()) + len(SmallTask.objects.all())
+    total_end_tasks = len(ProjectTask.objects.filter(flag=1)) + len(MiddleTask.objects.filter(flag=1)) + len(SmallTask.objects.filter(flag=1))
+    if total_end_tasks == 0 and total_number_tasks == 0:
+        return 100
+    return (total_end_tasks / total_number_tasks) * 100
+
+def get_today_task():
+    #field名__dateで、日付（2019/08/01 etc ...)と一致するものが入る
+    today_tasks = len(ProjectTask.objects.filter(created_at__date = date.today())) + len(MiddleTask.objects.filter(created_at__date = date.today())) + len(SmallTask.objects.filter(created_at__date = date.today()))
+    today_end_tasks = len(ProjectTask.objects.filter(created_at__date = date.today(), flag=1)) + len(MiddleTask.objects.filter(created_at__date = date.today(), flag=1)) + len(SmallTask.objects.filter(created_at__date = date.today(), flag=1))
+    return (today_end_tasks / today_tasks) * 100
