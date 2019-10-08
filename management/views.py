@@ -31,8 +31,8 @@ def middle_task_detail(request, project_id, big_id):
     task_flag(request, sys._getframe().f_code.co_name)
     big_task = ProjectTask.objects.get(id=big_id)
     project = ProjectManagement.objects.get(project_id=big_task.task_id)
-    all_middle_task = big_task.middletask_set.all() #projecttask_set　リレーションしている値をとりだす
-    all_big_task = project.projecttask_set.all()
+    all_middle_task = big_task.middletask_set.filter(flag=0) #projecttask_set　リレーションしている値をとりだす
+    all_big_task = project.projecttask_set.filter(flag=0)
     project_form = {
         'id': big_id,
         'form': PriorityForm(),
@@ -118,19 +118,19 @@ def create_task(request, num):
             return redirect('management:small_task_detail', project_id=project_id, big_id=big_task_id, middle_id=get_middle_task.id)
 
 def task_flag(request, method_name):
-    task_flag = [int(i) for i in request.POST.getlist('flag')]
+    task_flags = [int(i) for i in request.POST.getlist('flag')]
     if method_name == "middle_task_detail":
-        for i in task_flag:
+        for i in task_flags:
             middle_task = MiddleTask.objects.get(id=i)
             middle_task.flag = True
             middle_task.save()
     elif method_name == "small_task_detail":
-        for i in task_flag:
+        for i in task_flags:
             task = SmallTask.objects.get(id=i)
             task.flag = True
             task.save()
     else:
-        for i in task_flag:
+        for i in task_flags:
             task = ProjectTask.objects.get(id=i)
             task.flag = True
             task.save()

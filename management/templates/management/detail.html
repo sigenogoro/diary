@@ -1,8 +1,6 @@
 {% extends 'management/base.html' %}
-{% include 'management/big_task.html'%}
 {% load widget_tweaks %}
 {% load bootstrap4 %}
-
 {% block content %}
     <div class="main-content">
         {% block big_task %}{% endblock %}
@@ -11,27 +9,24 @@
                 {% block middle_task %}{% endblock %}
                 {% block small_task %}{% endblock %}
                 <div class="p-3 bg-white rounded box-shadow todo-analysis">
-                    <h6 class="border-bottom border-gray pb-2 mb-0">達成状況（固定）</h6>
+                    <h6 class="border-bottom border-gray pb-2 mb-0">タスク達成状況（固定）</h6>
                     <div class="card-flex">
-                        <div class="card border-light mb-3 pd-10" style="max-width: 18rem;">
+                        <div class="card border-light mb-3 pd-10" style="min-width: 12rem;">
                             <div class="card-header">達成率</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">Light card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <div id="achievement-rate"></div>
                                 </div>
                         </div>
-                        <div class="card border-light mb-3 pd-10" style="max-width: 18rem;">
-                                <div class="card-header">今週の達成率</div>
+                        <div class="card border-light mb-3 pd-10" style="min-width: 12rem;">
+                                <div class="card-header">今週</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">Light card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <div id="week-achievement"></div>
                                 </div>
                         </div>
-                        <div class="card border-light mb-3 pd-10" style="max-width: 18rem;">
-                                <div class="card-header">タスク消費量</div>
+                        <div class="card border-light mb-3 pd-10" style="min-width: 12rem;">
+                                <div class="card-header">総数</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">Light card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <div id="total-achievement"></div>
                                 </div>
                         </div>
                     </div>
@@ -82,12 +77,18 @@
             </div>
         </div>
 
-
     <script>
 
         $(function(){
             $('#datepicker').datepicker();
         });
+
+        $( document ).ready(function() {
+            $('#achievement-rate').circliful();
+            $('#week-achievement').circliful();
+            $('#total-achievement').circliful();
+        });
+
     </script>
 {% endblock %}
 
