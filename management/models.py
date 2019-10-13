@@ -1,5 +1,8 @@
 from django.db import models
 from datetime import date
+import calendar
+import datetime
+
 
 # Create your models here.
 class ProjectManagement(models.Model):
@@ -9,6 +12,7 @@ class ProjectManagement(models.Model):
     project_id = models.AutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     flag = models.BooleanField(default=False)
+    update_flag_at = models.DateTimeField(blank=True, null=True)
 
     #shellモードなどに使える + modelから呼び出すときに、この形で返ってくる
     def __str__(self):
@@ -36,6 +40,7 @@ class ProjectTask(models.Model):
     end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     flag = models.BooleanField(default=False)
+    update_flag_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return 'id：'+ str(self.id) +'  ' + 'task_name：'+ self.name +'  '+  '  ' + 'Big_task_id：' +   str(self.task_id) + ' ' + 'project_id：' + str(self.task.project_id) + " " +"end_date：" + str(self.end_date)
@@ -58,6 +63,7 @@ class MiddleTask(models.Model):
     end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     flag = models.BooleanField(default=False)
+    update_flag_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return 'id：'+ str(self.id) +'  ' + 'task_name：'+ self.name +'  '+ '  ' + 'project_task_id：' +   str(self.task.task_id) + ' ' + 'Big_task_id：' + str(self.task_id) + " " +"end_date：" + str(self.end_date)
@@ -81,6 +87,7 @@ class SmallTask(models.Model):
     end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     flag = models.BooleanField(default=False)
+    update_flag_at = models.DateTimeField(blank=True, null=True)
 
     def change_str(self):
         choice = [(0, '高'),(1, '中'),(2, '低')]
@@ -104,8 +111,22 @@ def get_total_task():
         return 100
     return (total_end_tasks / total_number_tasks) * 100
 
+#update_flag_taskと同じ日 and flag=1の値を取ってくる
 def get_today_task():
     #field名__dateで、日付（2019/08/01 etc ...)と一致するものが入る
-    today_tasks = len(ProjectTask.objects.filter(created_at__date = date.today())) + len(MiddleTask.objects.filter(created_at__date = date.today())) + len(SmallTask.objects.filter(created_at__date = date.today()))
-    today_end_tasks = len(ProjectTask.objects.filter(created_at__date = date.today(), flag=1)) + len(MiddleTask.objects.filter(created_at__date = date.today(), flag=1)) + len(SmallTask.objects.filter(created_at__date = date.today(), flag=1))
-    return (today_end_tasks / today_tasks) * 100
+    today_end_tasks = len(ProjectTask.objects.filter(update_flag_at__date = date.today(), flag=1)) + len(MiddleTask.objects.filter(update_flag_at__date = date.today(), flag=1)) + len(SmallTask.objects.filter(update_flag_at__date = date.today(), flag=1))
+    if today_end_tasks == 0:
+        return 0
+    return today_end_tasks
+
+def get_week_task():
+    dt = calendar.Calendar()
+    today_date = date.today()
+    for week_list in dt.monthdatescalendar(today_date.year, today_date.month):
+        for day in week_list:
+            if day == date.today():
+                week_satrt, week_end = week_list[0], week_list[0] + datetime.timedelta(days=8)
+    today_end_tasks = len(ProjectTask.objects.filter(update_flag_at__range =(week_satrt, week_end))) + len(MiddleTask.objects.filter(update_flag_at__range =(week_satrt, week_end))) + len(SmallTask.objects.filter(update_flag_at__range =(week_satrt, week_end)))
+    if today_end_tasks == 0:
+        return 0
+    return today_end_tasks

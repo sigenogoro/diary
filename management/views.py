@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, reverse
-from django.http import HttpResponse
 from .forms import PriorityForm
-from .models import ProjectManagement, ProjectTask, MiddleTask, SmallTask, get_total_task, get_today_task
+from .models import ProjectManagement, ProjectTask, MiddleTask, SmallTask, get_total_task, get_today_task, get_week_task
 from datetime import date
 from datetime import datetime
 import sys
+from django.utils import timezone
 
 # Create your views here.
 def index(request):
@@ -14,6 +14,7 @@ def index(request):
         'projects': all_project,
         'total': get_total_task(),
         'today_total': get_today_task(),
+        'week_total': get_week_task(),
     }
     return render(request, 'management/index.html', project_form)
 
@@ -123,16 +124,19 @@ def task_flag(request, method_name):
     task_flags = [int(i) for i in request.POST.getlist('flag')]
     if method_name == "middle_task_detail":
         for i in task_flags:
-            middle_task = MiddleTask.objects.get(id=i)
-            middle_task.flag = True
-            middle_task.save()
+            task = MiddleTask.objects.get(id=i)
+            task.flag = True
+            task.update_flag_at = timezone.datetime.now()
+            task.save()
     elif method_name == "small_task_detail":
         for i in task_flags:
             task = SmallTask.objects.get(id=i)
             task.flag = True
+            task.update_flag_at = timezone.datetime.now()
             task.save()
     else:
         for i in task_flags:
             task = ProjectTask.objects.get(id=i)
             task.flag = True
+            task.update_flag_at = timezone.datetime.now()
             task.save()

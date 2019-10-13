@@ -4,3 +4,4 @@ function task_name(tasktype){
     const result = document.getElementById('taskname');
     result.value = get_id;
 }
+

@@ -43,24 +43,34 @@
             </tbody>
         </table>
     </div>
-    <!-- fadeInのような動作は、management.cssのAnimetionで設定している -->
     <div class="p-3 bg-white rounded box-shadow todo-analysis">
         <h6 class="border-bottom border-gray pb-2 mb-0">タスク達成状況（固定）</h6>
         <div class="card-flex">
-            <div class="card border-light mb-3 pd-10" style="min-width: 15rem;">
+            <div class="card border-dark mb-3" style="min-width: 15rem;">
                 <!-- タスクを処理した総数 -->
                 <div class="card-header">総数</div>
                     <div class="card-body">
                         <div id="total-achievement" data-percent="{{total}}"></div>
                     </div>
             </div>
-            <div class="card border-light mb-3 pd-10" style="min-width: 15rem;">
-                <!-- 今日できたタスク数 -->
-                    <div class="card-header">今日</div>
-                    <div class="card-body">
-                        <div id="today-achievement" data-percent={{today_total}}></div>
-                    </div>
+            <div class="context-flex">
+                <div class="card text-white bg-primary mb-3" style="max-height: 7rem; width: 15rem;">
+                    <!-- 今日できたタスク数 -->
+                        <div class="card-header">今週（消費量）</div>
+                        <div class="card-body">
+                            <div class="today-number">{{week_total}}</div>
+                        </div>
+                </div>
+                <div class="card text-white bg-primary mb-3 pd-10" style="max-height: 7rem; width: 15rem;">
+                    <!-- 今日できたタスク数 -->
+                        <div class="card-header">今日（消費量）</div>
+                        <div class="card-body">
+                            <div>{{today_total}}</div>
+                        </div>
+                </div>
             </div>
+
+            </canvas>
         </div>
     </div>
     <!-- モーダル表示にする -->
@@ -111,7 +121,6 @@
 
         $( document ).ready(function() {
             $('#total-achievement').circliful();
-            $('#today-achievement').circliful();
         });
     </script>
 {% endblock %}

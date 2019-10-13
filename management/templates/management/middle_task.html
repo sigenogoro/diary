@@ -10,6 +10,7 @@
             <tbody>
                 {% for middle_task in middle_tasks %}
                     <tr>
+                        <!--flagの更新を行うため  -->
                         <form action="{% url 'management:middle_task_detail' middle_task.task.task_id middle_task.task_id  %}" method="POST">
                             {% csrf_token %}
                             <th scope="row"><input type="checkbox" name="flag" value="{{middle_task.id}}"></th>

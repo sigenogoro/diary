@@ -102,12 +102,13 @@ td.bar {
 }
 
 
-.pd-10 {
-    padding-top: 20px;
-    margin: auto;
-}
-
 .fx {
     float: left;
     margin-right: 5%;
 }
+
+
+.context-flex {
+    margin: 0 10px 5px 10px;
+}
+

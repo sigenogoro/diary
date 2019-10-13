@@ -15,14 +15,17 @@
             <tbody>
                 {% for big_task in big_tasks %}
                     <tr>
-                        <th scope="row"><input type="checkbox"></th>
-                        <td><a href="{% url 'management:middle_task_detail' big_task.task.project_id  big_task.id %}">{{big_task.name}}</a></td>
-                        <td><span class="badge badge-pill badge-success aks">{{big_task.change_str}}</span></td>
-                    </tr>
+                        <form action="{% url 'management:big_task_detail' big_task.task.project_id %}" method="POST">
+                            <th scope="row"><input type="checkbox" name="flag" value="{{big_task.id}}"></th>
+                            <td><a href="{% url 'management:middle_task_detail' big_task.task.project_id  big_task.id %}">{{big_task.name}}</a></td>
+                            <td><span class="badge badge-pill badge-success aks">{{big_task.change_str}}</span></td>
+                        </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <input type="submit" class="btn btn-primary fx" value="更新">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary fx" value="更新">
+        </form>
         <input type="submit" class="btn btn-primary"  onclick="task_name(this);" id="big_task" data-toggle="modal" data-target="#add_task_modal" data-whatever="big-task" value="達成タスク作成">
     </div>
 
