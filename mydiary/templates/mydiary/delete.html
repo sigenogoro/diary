@@ -1,7 +1,7 @@
 {% extends './base.html' %}
 {% block content %}
     <body>
-        <form action="{% url 'mydairy:delete' id %}" method="post">
+        <form action="{% url 'mydiary:delete' id %}" method="post">
             {% csrf_token %}
             <p>Are you sure you want to delete?</p>
             <tr><th></th><td><input type="submit" value="click"></td></tr>

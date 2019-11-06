@@ -61,7 +61,7 @@ def delete(request, num):
         del_obj.delete()
         return redirect(to='/')
     params = {
-        'title': 'Record_edit',
+        'title': 'Record_delete',
         'id': num,
         'msg': del_obj
     }
