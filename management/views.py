@@ -63,6 +63,9 @@ def small_task_detail(request, project_id, big_id, middle_id):
     }
     return render(request, 'management/small_task.html', project_form)
 
+def todo_task_list(request):
+    return render(request, 'management/todo_task.html')
+
 # プロジェクト作り
 def create_project(request):
     if request.method == "POST":
