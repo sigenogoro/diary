@@ -8,7 +8,7 @@ from django.utils import timezone
 
 # Create your views here.
 def index(request):
-    all_project = ProjectManagement.objects.all()
+    all_project = ProjectManagement.objects.order_by('priority')[:5]
     project_form = {
         'form': PriorityForm(),
         'projects': all_project,
@@ -22,7 +22,7 @@ def index(request):
 def big_task_detail(request, project_id):
     task_flag(request, sys._getframe().f_code.co_name)
     project = ProjectManagement.objects.get(project_id=project_id)
-    all_big_task = project.projecttask_set.filter(flag=0) #projecttask_set　リレーションしている値をとりだす
+    all_big_task = project.projecttask_set.filter(flag=0).order_by("priority") #projecttask_set　リレーションしている値をとりだす
     project_form = {
         'id': project_id,
         'form': PriorityForm(),
@@ -34,8 +34,8 @@ def middle_task_detail(request, project_id, big_id):
     task_flag(request, sys._getframe().f_code.co_name)
     big_task = ProjectTask.objects.get(id=big_id)
     project = ProjectManagement.objects.get(project_id=big_task.task_id)
-    all_middle_task = big_task.middletask_set.filter(flag=0) #projecttask_set　リレーションしている値をとりだす
-    all_big_task = project.projecttask_set.filter(flag=0)
+    all_middle_task = big_task.middletask_set.filter(flag=0).order_by("priority") #projecttask_set　リレーションしている値をとりだす
+    all_big_task = project.projecttask_set.filter(flag=0).order_by("priority")
     project_form = {
         'id': big_id,
         'form': PriorityForm(),
@@ -51,9 +51,9 @@ def small_task_detail(request, project_id, big_id, middle_id):
     middle_task = MiddleTask.objects.get(id=middle_id)
     big_task = ProjectTask.objects.get(id=middle_task.task_id)
     project = ProjectManagement.objects.get(project_id=big_task.task_id)
-    all_small_task = middle_task.smalltask_set.filter(flag=0)
-    all_middle_task = big_task.middletask_set.filter(flag=0) #projecttask_set　リレーションしている値をとりだす
-    all_big_task = project.projecttask_set.filter(flag=0)
+    all_small_task = middle_task.smalltask_set.filter(flag=0).order_by("priority")
+    all_middle_task = big_task.middletask_set.filter(flag=0).order_by("priority") #projecttask_set　リレーションしている値をとりだす
+    all_big_task = project.projecttask_set.filter(flag=0).order_by("priority")
     project_form = {
         'id': middle_id,
         'form': PriorityForm(),
@@ -63,8 +63,7 @@ def small_task_detail(request, project_id, big_id, middle_id):
     }
     return render(request, 'management/small_task.html', project_form)
 
-def todo_task_list(request):
-    return render(request, 'management/todo_task.html')
+
 
 # プロジェクト作り
 def create_project(request):
