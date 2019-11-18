@@ -7,7 +7,6 @@
         <table class="table">
             <thead class="thead">
                 <tr>
-                    <th scope="col"></th>
                     <th scope="col">達成タスク</th>
                     <th scope="col">優先度</th>
                 </tr>
@@ -15,19 +14,49 @@
             <tbody>
                 {% for big_task in big_tasks %}
                     <tr>
-                        <form action="{% url 'management:big_task_detail' big_task.task.project_id %}" method="POST">
-                            <th scope="row"><input type="checkbox" name="flag" value="{{big_task.id}}"></th>
-                            <td><a href="{% url 'management:middle_task_detail' big_task.task.project_id  big_task.id %}">{{big_task.name}}</a></td>
-                            <td><span class="badge badge-pill badge-success aks">{{big_task.change_str}}</span></td>
-                        </tr>
+                        <td><a href="{% url 'management:middle_task_detail' big_task.task.project_id  big_task.id %}">{{big_task.name}}</a></td>
+                        <td><span class="badge badge-pill badge-success aks">{{big_task.change_str}}</span></td>
+                        <td><input type="submit" class="btn btn-primary btn-sm" onclick="task_name(this);" id="big-task" data-toggle="modal" data-target="#change_task_modal" data-whatever="big-task" data-chnageurl="{% url 'management:change_task' big_task.id %}" value="編集"></td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
-            {% csrf_token %}
-            <input type="submit" class="btn btn-primary fx" value="更新">
         </form>
-        <input type="submit" class="btn btn-primary"  onclick="task_name(this);" id="big_task" data-toggle="modal" data-target="#add_task_modal" data-whatever="big-task" value="達成タスク作成">
+        <input type="submit" class="btn btn-primary"  onclick="task_name(this);" id="big_task" data-toggle="modal" data-target="#add_task_modal" data-whatever="big-task"  value="達成タスク作成">
     </div>
 
+    <div class="modal fade" id="change_task_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>タスクを変更します！！</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST" id="change-form">
+                        {% csrf_token %}
+                            <div class="form-group">
+                                <p>Are you sure?</p>
+                                <input id= "change-task-name" type="hidden" name="tasktype">
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-secondary" data-dismiss="modal" value="戻る">
+                                <input type="submit" class="btn btn-primary" id="update-button" onclick="getId(this);" value="更新">
+                                <input type="submit" class="btn btn-primary" id="delete-button" onclick="getId(this);" value="削除">
+                                <input type="hidden" id="decison-making" name="decison-name">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <script>
+            const decisonvalue = document.getElementById("decison-making");
+            const changeForm = document.getElementById("change-form");
+            const modelForm = document.getElementById("big-task");
+            changeForm.action = modelForm.dataset.chnageurl
+            function getId(value){
+                decisonvalue.value = value.id
+            }
+        </script>
 {% endblock %}

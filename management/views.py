@@ -20,7 +20,6 @@ def index(request):
 
 #urls.pyのname属性からメソッドを分けている
 def big_task_detail(request, project_id):
-    task_flag(request, sys._getframe().f_code.co_name)
     project = ProjectManagement.objects.get(project_id=project_id)
     all_big_task = project.projecttask_set.filter(flag=0).order_by("priority") #projecttask_set　リレーションしている値をとりだす
     project_form = {
@@ -63,6 +62,25 @@ def small_task_detail(request, project_id, big_id, middle_id):
     }
     return render(request, 'management/small_task.html', project_form)
 
+def change_task(request, num):
+    if request.POST.get("decison-name") == "update-button":
+        task_flag(num, request.POST.get("tasktype"))
+    elif request.POST.get("decison-name") == "delete-button":
+        delete_task(num, request.POST.get("tasktype"))
+    return redirect("management:big_task_detail", project_id=8)
+
+def delete_task(task_id, task_type):
+    if task_type == "middle_task":
+        task = MiddleTask.objects.get(id=task_id)
+        task.delete()
+    elif task_type == "small_task":
+        task = SmallTask.objects.get(id=task_id)
+        task.delete()
+    else:
+        task = ProjectTask.objects.get(id=task_id)
+        task.delete()
+
+
 
 
 # プロジェクト作り
@@ -82,7 +100,7 @@ def create_task(request, num):
     if request.method == "POST":
         str_date = datetime.strptime(request.POST['date'], "%m/%d/%Y")
         change_date =  str_date.strftime('%Y-%m-%d')
-        if request.POST.get("tasktype", "") == "big-task":
+        if request.POST.get("tasktype") == "big-task":
             try:
                 ProjectManagement.objects.get(project_id=num)
             except ProjectManagement.DoesNotExist:
@@ -122,23 +140,19 @@ def create_task(request, num):
             )
             return redirect('management:small_task_detail', project_id=project_id, big_id=big_task_id, middle_id=get_middle_task.id)
 
-def task_flag(request, method_name):
-    task_flags = [int(i) for i in request.POST.getlist('flag')]
-    if method_name == "middle_task_detail":
-        for i in task_flags:
-            task = MiddleTask.objects.get(id=i)
-            task.flag = True
-            task.update_flag_at = timezone.datetime.now()
-            task.save()
-    elif method_name == "small_task_detail":
-        for i in task_flags:
-            task = SmallTask.objects.get(id=i)
-            task.flag = True
-            task.update_flag_at = timezone.datetime.now()
-            task.save()
+def task_flag(task_id, task_type):
+    if task_type == "middle_task":
+        task = MiddleTask.objects.get(id=task_id)
+        task.flag = True
+        task.update_flag_at = timezone.datetime.now()
+        task.save()
+    elif task_type == "small_task":
+        task = SmallTask.objects.get(id=task_id)
+        task.flag = True
+        task.update_flag_at = timezone.datetime.now()
+        task.save()
     else:
-        for i in task_flags:
-            task = ProjectTask.objects.get(id=i)
-            task.flag = True
-            task.update_flag_at = timezone.datetime.now()
-            task.save()
+        task = ProjectTask.objects.get(id=task_id)
+        task.flag = True
+        task.update_flag_at = timezone.datetime.now()
+        task.save()
