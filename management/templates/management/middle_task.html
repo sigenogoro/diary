@@ -10,10 +10,6 @@
             <tbody>
                 {% for middle_task in middle_tasks %}
                     <tr>
-                        <!--flagの更新を行うため  -->
-                        <form action="{% url 'management:middle_task_detail' middle_task.task.task_id middle_task.task_id  %}" method="POST">
-                            {% csrf_token %}
-                            <th scope="row"><input type="checkbox" name="flag" value="{{middle_task.id}}"></th>
                         <td><a href="{% url 'management:small_task_detail' middle_task.task.task_id middle_task.task_id middle_task.id %}">{{middle_task.name}}</a></td>
                         <td><span class="badge badge-pill badge-success box-priority">{{middle_task.change_str}}</span></td>
                         {% if middle_task.days_left > 0 %}
@@ -23,16 +19,17 @@
                         {% else %}
                             <td>{{middle_task.days_left}}日経過</td>
                         {% endif %}
-                        <td>{{middle_task.middle_task.big_task_id}}</td>
+                        <td><input type="submit" class="btn btn-primary btn-sm" onclick="each_task_type(this);" id="task-force-middle" data-toggle="modal" data-target="#change_task_modal" data-whatever="middle-task" data-chnageurl="{% url 'management:change_task' middle_task.id %}" value="編集"></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <input type="submit" class="btn btn-primary fx" value="更新">
-    </form>
     <input type="submit" class="btn btn-primary" onclick="task_name(this);" data-toggle="modal" data-target="#add_task_modal"data-whatever="middle-task" value="追加">
 </div>
 
-
+<script>
+    const middle_modalForm = document.getElementById("task-force-middle");
+    changeForm.action = middle_modalForm.dataset.chnageurl;
+</script>
 
 {% endblock %}

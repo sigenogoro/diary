@@ -10,9 +10,6 @@
             <tbody>
                 {% for small_task in small_tasks %}
                 <tr>
-                    <form action="{% url 'management:small_task_detail' small_task.task.task.task_id  small_task.task.task_id small_task.task_id   %}" method="POST">
-                        {% csrf_token %}
-                        <th scope="row"><input type="checkbox" name="flag" value="{{small_task.id}}" ></th>
                     <td>{{small_task.name}}</td>
                     <td><span class="badge badge-pill badge-success box-priority">{{small_task.change_str}}</span></td>
                     {% if small_task.days_left > 0 %}
@@ -22,14 +19,16 @@
                     {% else %}
                         <td>{{small_task.days_left}}日経過</td>
                     {% endif %}
+                    <td><input type="submit" class="btn btn-primary btn-sm" onclick="each_task_type(this);" id="task-force-small" data-toggle="modal" data-target="#change_task_modal" data-whatever="small-task" data-chnageurl="{% url 'management:change_task' small_task.id %}" value="編集"></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <input type="submit" class="btn btn-primary fx" value="更新">
-    </form>
     <input onclick="task_name(this);" type="submit" class="btn btn-primary" id="small-task" data-toggle="modal" data-target="#add_task_modal"data-whatever="small-task" value="追加">
     </div>
 
-    
+    <script>
+        const small_modalForm = document.getElementById("task-force-small");
+        changeForm.action = small_modalForm.dataset.chnageurl;
+    </script>
 {% endblock %}

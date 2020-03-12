@@ -20,6 +20,7 @@ def index(request):
 
 #urls.pyのname属性からメソッドを分けている
 def big_task_detail(request, project_id):
+    print(project_id)
     project = ProjectManagement.objects.get(project_id=project_id)
     all_big_task = project.projecttask_set.filter(flag=0).order_by("priority") #projecttask_set　リレーションしている値をとりだす
     project_form = {
@@ -30,7 +31,6 @@ def big_task_detail(request, project_id):
     return render(request, 'management/big_task.html', project_form)
 
 def middle_task_detail(request, project_id, big_id):
-    task_flag(request, sys._getframe().f_code.co_name)
     big_task = ProjectTask.objects.get(id=big_id)
     project = ProjectManagement.objects.get(project_id=big_task.task_id)
     all_middle_task = big_task.middletask_set.filter(flag=0).order_by("priority") #projecttask_set　リレーションしている値をとりだす
@@ -46,7 +46,6 @@ def middle_task_detail(request, project_id, big_id):
 
 
 def small_task_detail(request, project_id, big_id, middle_id):
-    task_flag(request, sys._getframe().f_code.co_name)
     middle_task = MiddleTask.objects.get(id=middle_id)
     big_task = ProjectTask.objects.get(id=middle_task.task_id)
     project = ProjectManagement.objects.get(project_id=big_task.task_id)
@@ -64,21 +63,25 @@ def small_task_detail(request, project_id, big_id, middle_id):
 
 def change_task(request, num):
     if request.POST.get("decison-name") == "update-button":
-        task_flag(num, request.POST.get("tasktype"))
+        redirect_project_id = task_flag(num, request.POST.get("tasktype"))
     elif request.POST.get("decison-name") == "delete-button":
-        delete_task(num, request.POST.get("tasktype"))
-    return redirect("management:big_task_detail", project_id=8)
+        redirect_project_id = delete_task(num, request.POST.get("tasktype"))
+    return redirect('management:big_task_detail', project_id=redirect_project_id)
 
 def delete_task(task_id, task_type):
-    if task_type == "middle_task":
+    if task_type == "middle-task":
         task = MiddleTask.objects.get(id=task_id)
+        task_project_id = task.task.task.project_id
         task.delete()
-    elif task_type == "small_task":
+    elif task_type == "small-task":
         task = SmallTask.objects.get(id=task_id)
+        task_project_id = task.task.task.task.project_id
         task.delete()
     else:
         task = ProjectTask.objects.get(id=task_id)
+        task_project_id = task.task.project_id
         task.delete()
+    return task_project_id
 
 
 
@@ -141,18 +144,21 @@ def create_task(request, num):
             return redirect('management:small_task_detail', project_id=project_id, big_id=big_task_id, middle_id=get_middle_task.id)
 
 def task_flag(task_id, task_type):
-    if task_type == "middle_task":
+    if task_type == "middle-task":
         task = MiddleTask.objects.get(id=task_id)
         task.flag = True
         task.update_flag_at = timezone.datetime.now()
         task.save()
-    elif task_type == "small_task":
+        return task.task.task.project_id
+    elif task_type == "small-task":
         task = SmallTask.objects.get(id=task_id)
         task.flag = True
         task.update_flag_at = timezone.datetime.now()
         task.save()
+        return task.task.task.task.project_id
     else:
         task = ProjectTask.objects.get(id=task_id)
         task.flag = True
         task.update_flag_at = timezone.datetime.now()
         task.save()
+        return task.task.project_id

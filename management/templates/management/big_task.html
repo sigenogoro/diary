@@ -16,12 +16,11 @@
                     <tr>
                         <td><a href="{% url 'management:middle_task_detail' big_task.task.project_id  big_task.id %}">{{big_task.name}}</a></td>
                         <td><span class="badge badge-pill badge-success aks">{{big_task.change_str}}</span></td>
-                        <td><input type="submit" class="btn btn-primary btn-sm" onclick="task_name(this);" id="big-task" data-toggle="modal" data-target="#change_task_modal" data-whatever="big-task" data-chnageurl="{% url 'management:change_task' big_task.id %}" value="編集"></td>
+                        <td><input type="submit" class="btn btn-primary btn-sm" onclick="each_task_type(this);" id="task-force-big-{{big_task.id}}" data-toggle="modal" data-target="#change_task_modal" data-whatever="big-task" data-chnageurl="{% url 'management:change_task' big_task.id %}" value="編集"></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        </form>
         <input type="submit" class="btn btn-primary"  onclick="task_name(this);" id="big_task" data-toggle="modal" data-target="#add_task_modal" data-whatever="big-task"  value="達成タスク作成">
     </div>
 
@@ -52,9 +51,6 @@
 
         <script>
             const decisonvalue = document.getElementById("decison-making");
-            const changeForm = document.getElementById("change-form");
-            const modelForm = document.getElementById("big-task");
-            changeForm.action = modelForm.dataset.chnageurl
             function getId(value){
                 decisonvalue.value = value.id
             }
