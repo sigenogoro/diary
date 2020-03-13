@@ -20,7 +20,6 @@ def index(request):
 
 #urls.pyのname属性からメソッドを分けている
 def big_task_detail(request, project_id):
-    print(project_id)
     project = ProjectManagement.objects.get(project_id=project_id)
     all_big_task = project.projecttask_set.filter(flag=0).order_by("priority") #projecttask_set　リレーションしている値をとりだす
     project_form = {
