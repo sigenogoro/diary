@@ -1,9 +1,8 @@
 function task_name(tasktype){
-    var get_id = tasktype.dataset.whatever;
+    const get_id = tasktype.dataset.whatever; //big_task, miidel_taskを入れようとしている
     // task_nameメソッドによって、モーダル内の値を検索している。モーダル内のname属性が、「tasktype」と取得している
     const result = document.getElementById('taskname');
     result.value = get_id;
-    console.log(result);
 }
 
 

@@ -61,10 +61,18 @@ def small_task_detail(request, project_id, big_id, middle_id):
     return render(request, 'management/small_task.html', project_form)
 
 def change_task(request, num):
-    if request.POST.get("decison-name") == "update-button":
+    print(num)
+    redirect_project_id = ProjectTask.objects.get(id=num).task.project_id
+    if request.POST.get("decison-name") == "completion":
         redirect_project_id = task_flag(num, request.POST.get("tasktype"))
-    elif request.POST.get("decison-name") == "delete-button":
+    elif request.POST.get("decison-name") == "delete":
         redirect_project_id = delete_task(num, request.POST.get("tasktype"))
+    elif request.POST.get("decison-name") == "update":
+        edit_big_task = ProjectTask.objects.get(id=num)
+        edit_big_task.name = request.POST["name"]
+        edit_big_task.priority = request.POST["priority"]
+        edit_big_task.end_date = datetime.strptime(request.POST['date'], "%m/%d/%Y").strftime('%Y-%m-%d')
+        edit_big_task.save()
     return redirect('management:big_task_detail', project_id=redirect_project_id)
 
 def delete_task(task_id, task_type):
@@ -99,6 +107,7 @@ def create_project(request):
 
 # タスク作り
 def create_task(request, num):
+    print(request.POST)
     if request.method == "POST":
         str_date = datetime.strptime(request.POST['date'], "%m/%d/%Y")
         change_date =  str_date.strftime('%Y-%m-%d')

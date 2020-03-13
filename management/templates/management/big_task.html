@@ -16,7 +16,7 @@
                     <tr>
                         <td><a href="{% url 'management:middle_task_detail' big_task.task.project_id  big_task.id %}">{{big_task.name}}</a></td>
                         <td><span class="badge badge-pill badge-success aks">{{big_task.change_str}}</span></td>
-                        <td><input type="submit" class="btn btn-primary btn-sm" onclick="each_task_type(this);" id="task-force-big-{{big_task.id}}" data-toggle="modal" data-target="#change_task_modal" data-whatever="big-task" data-chnageurl="{% url 'management:change_task' big_task.id %}" value="編集"></td>
+                        <td><input type="submit" class="btn btn-primary btn-sm" onclick="each_task_type(this);" id="task-force-big-{{big_task.id}}" data-toggle="modal" data-target="#change_task_modal" data-whatever="big-task" data-task="{{big_task.name}},{{big_task.priority}},{{big_task.sample_1}}" data-chnageurl="{% url 'management:change_task' big_task.id %}" value="編集"></td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -34,13 +34,29 @@
                         <form action="" method="POST" id="change-form">
                         {% csrf_token %}
                             <div class="form-group">
-                                <p>Are you sure?</p>
+                                <p>タスクを変えますか？</p>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">タスク名:</label>
+                                    <input type="text" class="form-control" name="name" id="taskOneName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">優先度:</label>
+                                        <input type="radio" name="priority" value=0>高
+                                        <input type="radio" name="priority" value=1>中
+                                        <input type="radio" name="priority" value=2>低
+
+                                    <div class="form-group">
+                                        <p>期限: <input type="text" id="datepicker" name="date"></p>
+                                    </div>
+                                </div>
+                                <!-- 編集ボタンを押した際に次のリクエストを送るURLなどが入っている -->
                                 <input id= "change-task-name" type="hidden" name="tasktype">
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-secondary" data-dismiss="modal" value="戻る">
-                                <input type="submit" class="btn btn-primary" id="update-button" onclick="getId(this);" value="更新">
-                                <input type="submit" class="btn btn-primary" id="delete-button" onclick="getId(this);" value="削除">
+                                <input type="submit" class="btn btn-primary" id="update" onclick="getId(this);" value="更新">
+                                <input type="submit" class="btn btn-primary" id="completion" onclick="getId(this);" value="完了">
+                                <input type="submit" class="btn btn-primary" id="delete" onclick="getId(this);" value="削除">
                                 <input type="hidden" id="decison-making" name="decison-name">
                             </div>
                         </form>
@@ -50,9 +66,27 @@
         </div>
 
         <script>
+
             const decisonvalue = document.getElementById("decison-making");
             function getId(value){
                 decisonvalue.value = value.id
             }
+
+
+            // 編集モーダル内に特定の値を渡すため
+            $("#change_task_modal").on('show.bs.modal', function(event){
+                var button = $(event.relatedTarget)
+                var recipient = button.data('task').split(","); //splitをしているのは、配列型で特定のinputに代入するため
+                var modal = $(this);
+                var a = Number(recipient[1]);
+                modal.find('.modal-body input#taskOneName').val(recipient[0]);
+                // ラジオボタンに値を代入するため
+                $(`input[value=${a}]`).prop('checked', true);
+                modal.find('.modal-body input#datepicker').val(recipient[2]);
+
+            })
+            $('#datepicker').datepicker();
+
+
         </script>
 {% endblock %}

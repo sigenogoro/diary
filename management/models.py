@@ -43,7 +43,7 @@ class ProjectTask(models.Model):
     update_flag_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return 'id：'+ str(self.id) +'  ' + 'task_name：'+ self.name +'  '+  '  ' + 'Big_task_id：' +   str(self.task_id) + ' ' + 'project_id：' + str(self.task.project_id) + " " +"end_date：" + str(self.end_date)
+        return 'id：'+ str(self.id) +' ' + 'task_name：'+ self.name +' ' + 'Big_task_id：' +   str(self.task_id) + ' ' + 'project_id：' + str(self.task.project_id) + " " +"end_date：" + str(self.end_date)
 
     def change_str(self):
         choice = [(0, '高'),(1, '中'),(2, '低')]
@@ -54,6 +54,11 @@ class ProjectTask(models.Model):
     def days_left(self):
         current_date = date.today()
         return (self.end_date - current_date).days
+
+    def sample_1(self):
+        change_date =  self.end_date.strftime('%m/%d/%Y')
+        return change_date
+
 
 class MiddleTask(models.Model):
     id = models.AutoField(primary_key=True)
@@ -130,3 +135,4 @@ def get_week_task():
     if today_end_tasks == 0:
         return 0
     return today_end_tasks
+

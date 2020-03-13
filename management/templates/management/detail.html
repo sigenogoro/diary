@@ -40,7 +40,7 @@
                                     {% endfor %}
                                 {% endfor %}
                                 <div class="form-group">
-                                    <p>期限: <input type="text" id="datepicker" name="date"></p>
+                                    <p>期限: <input type="text" id="datepicker_add_task" name="date"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -56,9 +56,8 @@
 
     <script>
 
-        $(function(){
-            $('#datepicker').datepicker();
-        });
+        $('#datepicker_add_task').datepicker();
+
 
 
     </script>
